@@ -33,7 +33,7 @@ cd vaping
 vaping start --home=examples/standalone_dns &
 ```
 
-Note, you will need a compiler and python development libraries for some components.
+Open browser and point to 127.0.0.1:8080
 
 On CentOS/RHEL:
 
