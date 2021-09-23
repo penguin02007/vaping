@@ -26,8 +26,11 @@ to distribute.
 
 ## Installation
 
-```sh
-pip install vaping
+```
+pip3 install vaping vodka graphsrv
+git clone git@github.com:penguin02007/vaping.git
+cd vaping
+vaping start --home=examples/standalone_dns &
 ```
 
 Note, you will need a compiler and python development libraries for some components.

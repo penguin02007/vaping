@@ -16,12 +16,21 @@ probes:
           - host: 208.67.222.222
             name: OpenDNS
             color: orange
+      - name: gcp
+        hosts:
+          - host: 35.211.175.212
+            name: github
+            color: yellow
+          - host: 34.75.165.172
+            name: te02gcpuseast1
+            color: green
 
 plugins:
   - name: std_fping
     type: fping
     count: 10
     interval: 3s
+    period: 100
     output:
       - vodka
 
@@ -56,7 +65,7 @@ plugins:
 
       - name: http
         type: flask
-        bind: 0.0.0.0:7021
+        bind: 0.0.0.0:8080
         debug: true
         static_url_path: /static
         server: self
