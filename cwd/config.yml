@@ -23,12 +23,12 @@ probes:
           - host: 34.75.165.172
             name: te02gcpuseast1
             color: green
-  - name: mtr
-    type: fping_mtr
-    group: mtr.gcp_github
-    host: 35.211.175.212
-    output:
-      - vodka
+# - name: mtr
+#   type: fping_mtr
+#   group: mtr.gcp_github
+#   host: 35.211.175.212
+#   output:
+#     - vodka
 
 plugins:
   - name: std_fping
