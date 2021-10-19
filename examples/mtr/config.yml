@@ -1,40 +1,50 @@
-
 probes:
+  - name: latency
+    type: std_fping
+    output:
+      - vodka
+    groups:
+      - name: public_dns
+        hosts:
+          - host: 8.8.8.8
+            name: Google
+            color: red
+          - host: 4.2.2.1
+            name: Level(3)
+            color: blue
+          - host: 208.67.222.222
+            name: OpenDNS
+            color: orange
+      - name: gcp
+        hosts:
+          - host: 5.11.175.212
+            name: github
+            color: yellow
 
-  # mtr probe
   - name: mtr
     type: fping_mtr
-
-    # we need to let graphsrv know what the default
-    # graph to render data from this probe should be,
-    # in this case we want it to be `mtr`
     default_graph: mtr
-
-    # we need to let graphsrv know what data group
-    # to use for data from this probe. Since the probe
-    # itself is not setting up any groups unlike the `fping`
-    # probe.
-    group: mtr.cloudflare_dns
-
-    # target host for the mtr probe
-    host: 1.1.1.1
-
+    group: mtr.gcp
+    host: 35.211.175.212
+    name: github
     output:
       - vodka
 
 plugins:
+  - name: std_fping
+    type: fping
+    count: 10
+    interval: 3s
+    period: 100
+    output:
+      - vodka
 
-  # mtr plugin
   - name: fping_mtr
     type: fping_mtr
     interval: 3s
-
-
   - name: vodka
     type: vodka
-
     data:
-
       # We have to add a new data type to handle mtr data
       - type: fping_mtr
         handlers:
@@ -44,6 +54,16 @@ plugins:
             container: list
             limit: 100
 
+  - name: vodka
+    type: vodka
+    data:
+      - type: fping
+        handlers:
+          - type: index
+            index: host
+          - type: store
+            container: list
+            limit: 500
 
     apps:
       graphsrv:
@@ -60,8 +80,6 @@ plugins:
             type: smokestack
             plot_y: avg
 
-          # let graphsrv know to initialize the `mtr`
-          # graph for use
           mtr:
             id_field: host
             type: mtr
@@ -70,7 +88,7 @@ plugins:
 
       - name: http
         type: flask
-        bind: 0.0.0.0:7021
+        bind: 0.0.0.0:8080
         debug: true
         static_url_path: /static
         server: self
